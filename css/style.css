@@ -9,22 +9,24 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(135deg,#0f172a,#1e293b);
-    font-family:Arial,sans-serif;
+    background:
+    linear-gradient(135deg,#0f172a,#1e293b);
     overflow:hidden;
+    font-family:Arial,sans-serif;
 }
 
 .card{
-    width:400px;
-    max-width:90%;
+    width:420px;
+    max-width:92%;
     background:rgba(255,255,255,0.08);
     backdrop-filter:blur(20px);
     border-radius:30px;
     padding:30px;
-    box-shadow:0 0 40px rgba(0,0,0,.3);
-    border:1px solid rgba(255,255,255,.1);
     text-align:center;
+    border:1px solid rgba(255,255,255,.1);
+    box-shadow:0 10px 40px rgba(0,0,0,.3);
     position:relative;
+    z-index:2;
 }
 
 h1{
@@ -47,22 +49,24 @@ textarea{
 
 textarea{
     resize:none;
-    height:150px;
+    min-height:150px;
 }
 
-input::placeholder,
-textarea::placeholder{
+textarea::placeholder,
+input::placeholder{
     color:#ccc;
 }
 
 button{
     border:none;
-    padding:15px 25px;
-    border-radius:50px;
-    background:linear-gradient(45deg,#ff4d6d,#ff758f);
+    background:
+    linear-gradient(45deg,#ff4d6d,#ff758f);
+
     color:white;
-    font-size:16px;
+    padding:15px 30px;
+    border-radius:50px;
     cursor:pointer;
+    font-size:16px;
     transition:.3s;
     margin-top:10px;
 }
@@ -79,21 +83,36 @@ button:hover{
     color:white;
     line-height:2;
     font-size:20px;
-    margin:20px 0;
+    margin:25px 0;
+}
+
+.reply-box{
+    margin-top:30px;
+}
+
+.reply-box h3{
+    color:white;
+    margin-bottom:10px;
 }
 
 .heart{
-    position:absolute;
+    position:fixed;
+    top:-50px;
     animation:fall linear forwards;
+    pointer-events:none;
 }
 
 @keyframes fall{
+
     from{
-        transform:translateY(-100px);
+        transform:
+        translateY(-100px);
         opacity:1;
     }
+
     to{
-        transform:translateY(100vh);
+        transform:
+        translateY(110vh);
         opacity:0;
     }
 }

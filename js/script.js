@@ -1,13 +1,23 @@
-function generateMessage() {
+const myNumber = "201114539675";
+
+function generateMessage(){
 
     const name =
-    document.getElementById("personName").value;
+    document.getElementById(
+        "personName"
+    ).value.trim();
 
     const message =
-    document.getElementById("messageInput").value;
+    document.getElementById(
+        "messageInput"
+    ).value.trim();
 
-    if(name.trim() === "" || message.trim() === ""){
-        alert("اكتب الاسم والرسالة 😌");
+    if(!name || !message){
+
+        alert(
+            "اكتب الاسم والرسالة 😌"
+        );
+
         return;
     }
 
@@ -16,35 +26,49 @@ function generateMessage() {
     `?name=${encodeURIComponent(name)}` +
     `&msg=${encodeURIComponent(message)}`;
 
-    navigator.clipboard.writeText(url);
+    navigator.clipboard
+    .writeText(url);
 
-    alert("تم نسخ الرابط 😈 ابعته على واتساب");
+    alert(
+        "تم نسخ الرابط 😈\nابعت اللينك على واتساب"
+    );
 }
 
-
-function showMessage(name, message){
-
-    document
-        .getElementById("setup")
-        .classList.add("hidden");
+function showMessage(
+    name,
+    message
+){
 
     document
-        .getElementById("messageScreen")
-        .classList.remove("hidden");
+    .getElementById("setup")
+    .classList.add("hidden");
 
     document
-        .getElementById("title")
-        .innerHTML =
-        `✨ رسالة إلى ${name} ✨`;
+    .getElementById(
+        "messageScreen"
+    )
+    .classList.remove(
+        "hidden"
+    );
+
+    document
+    .getElementById(
+        "title"
+    ).innerHTML =
+    `✨ رسالة إلى ${name} ✨`;
 
     const typing =
-    document.getElementById("typing");
+    document
+    .getElementById(
+        "typing"
+    );
 
     typing.innerHTML = "";
 
     let i = 0;
 
-    const effect = setInterval(()=>{
+    const effect =
+    setInterval(()=>{
 
         typing.innerHTML +=
         message[i] === "\n"
@@ -54,49 +78,109 @@ function showMessage(name, message){
         i++;
 
         if(i >= message.length){
-            clearInterval(effect);
+
+            clearInterval(
+                effect
+            );
         }
 
     },40);
 }
 
+function sendReply(){
 
-window.onload = () => {
+    const reply =
+    document
+    .getElementById(
+        "reply"
+    )
+    .value.trim();
 
-    const params =
-    new URLSearchParams(window.location.search);
+    if(!reply){
 
-    const name = params.get("name");
-    const msg = params.get("msg");
+        alert(
+            "اكتبي رد الأول 😌"
+        );
 
-    if(name && msg){
-        showMessage(name, msg);
+        return;
     }
+
+    const text =
+`💌 وصلك رد جديد:
+
+${reply}`;
+
+    const whatsappURL =
+`https://wa.me/${myNumber}?text=${encodeURIComponent(text)}`;
+
+    window.open(
+        whatsappURL,
+        "_blank"
+    );
 }
 
+window.onload = ()=>{
+
+    const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+    const name =
+    params.get("name");
+
+    const msg =
+    params.get("msg");
+
+    if(name && msg){
+
+        showMessage(
+            name,
+            msg
+        );
+    }
+};
 
 function createHeart(){
 
     const heart =
-    document.createElement("div");
+    document
+    .createElement("div");
 
-    heart.innerHTML = "❤️";
-    heart.classList.add("heart");
+    heart.innerHTML =
+    "❤️";
+
+    heart.classList.add(
+        "heart"
+    );
 
     heart.style.left =
-    Math.random()*100 + "vw";
+    Math.random() *
+    100 + "vw";
 
     heart.style.fontSize =
-    (15 + Math.random()*25) + "px";
+    (15 +
+    Math.random()*25)
+    + "px";
 
     heart.style.animationDuration =
-    (4 + Math.random()*3) + "s";
+    (4 +
+    Math.random()*4)
+    + "s";
 
-    document.body.appendChild(heart);
+    document.body
+    .appendChild(
+        heart
+    );
 
     setTimeout(()=>{
+
         heart.remove();
+
     },7000);
 }
 
-setInterval(createHeart,300);
+setInterval(
+    createHeart,
+    300
+);
