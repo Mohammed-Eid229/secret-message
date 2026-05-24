@@ -1,5 +1,6 @@
 const myNumber = "201114539675";
 
+
 // إنشاء لينك الرسالة
 function generateMessage() {
 
@@ -22,10 +23,25 @@ function generateMessage() {
         return;
     }
 
+    // تحويل Base64 عشان العربي والإيموجيز
+    const encodedName =
+        btoa(
+            unescape(
+                encodeURIComponent(name)
+            )
+        );
+
+    const encodedMessage =
+        btoa(
+            unescape(
+                encodeURIComponent(message)
+            )
+        );
+
     const url =
         `${window.location.origin}${window.location.pathname}` +
-        `?name=${encodeURIComponent(name)}` +
-        `&msg=${encodeURIComponent(message)}`;
+        `?name=${encodedName}` +
+        `&msg=${encodedMessage}`;
 
     navigator.clipboard
         .writeText(url);
@@ -36,52 +52,69 @@ function generateMessage() {
 }
 
 
+
 // عرض الرسالة
-function showMessage(name, message) {
+function showMessage(
+    name,
+    message
+) {
 
     document
         .getElementById("setup")
         .classList.add("hidden");
 
     document
-        .getElementById("messageScreen")
-        .classList.remove("hidden");
+        .getElementById(
+            "messageScreen"
+        )
+        .classList.remove(
+            "hidden"
+        );
 
     document
-        .getElementById("title")
-        .innerHTML =
+        .getElementById(
+            "title"
+        ).innerHTML =
         `✨ رسالة إلى ${name} ✨`;
 
     const typing =
-        document.getElementById("typing");
+        document.getElementById(
+            "typing"
+        );
 
     typing.innerHTML = "";
 
-    // يحافظ على العربي والإيموجيز صح
-    const chars = Array.from(message);
+    // Fix للعربي والإيموجيز
+    const chars =
+        Array.from(message);
 
     let i = 0;
 
-    const effect = setInterval(() => {
+    const effect =
+        setInterval(() => {
 
-        if (i < chars.length) {
+            if (i < chars.length) {
 
-            typing.innerHTML +=
-                chars[i] === "\n"
-                    ? "<br>"
-                    : chars[i];
+                typing.innerHTML +=
+                    chars[i] === "\n"
+                        ? "<br>"
+                        : chars[i];
 
-            i++;
+                i++;
 
-        } else {
+            } else {
 
-            clearInterval(effect);
-        }
+                clearInterval(
+                    effect
+                );
+            }
 
-    }, 35);
+        }, 35);
 }
 
-// إرسال الرد على واتساب
+
+
+// إرسال الرد
 function sendReply() {
 
     const reply =
@@ -100,11 +133,28 @@ function sendReply() {
         return;
     }
 
-    // اسم الشخص من اللينك
-    const personName =
+    const params =
         new URLSearchParams(
             window.location.search
-        ).get("name") || "شخص";
+        );
+
+    let personName =
+        "شخص";
+
+    try {
+
+        personName =
+            decodeURIComponent(
+                escape(
+                    atob(
+                        params.get(
+                            "name"
+                        ) || ""
+                    )
+                )
+            );
+
+    } catch (e) {}
 
     const text =
 `💌 وصلك رد جديد من ${personName}
@@ -112,15 +162,16 @@ function sendReply() {
 ${reply}`;
 
     const whatsappURL =
-`https://api.whatsapp.com/send?phone=${myNumber}&text=${encodeURIComponent(text)}`;
+`https://wa.me/${myNumber}?text=${encodeURIComponent(text)}`;
 
-    // يفتح الواتساب مباشرة
+    // فتح الواتساب مباشرة
     window.location.href =
         whatsappURL;
 }
 
 
-// لما الصفحة تفتح
+
+// عند فتح الصفحة
 window.onload = () => {
 
     const params =
@@ -128,21 +179,52 @@ window.onload = () => {
             window.location.search
         );
 
-    const name =
-        params.get("name");
+    try {
 
-    const msg =
-        params.get("msg");
+        const encodedName =
+            params.get("name");
 
-    // لو فيه رسالة في اللينك
-    if (name && msg) {
+        const encodedMsg =
+            params.get("msg");
 
-        showMessage(
-            name,
-            msg
+        if (
+            encodedName &&
+            encodedMsg
+        ) {
+
+            const name =
+                decodeURIComponent(
+                    escape(
+                        atob(
+                            encodedName
+                        )
+                    )
+                );
+
+            const msg =
+                decodeURIComponent(
+                    escape(
+                        atob(
+                            encodedMsg
+                        )
+                    )
+                );
+
+            showMessage(
+                name,
+                msg
+            );
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Message decode error:",
+            error
         );
     }
 };
+
 
 
 // القلوب
@@ -150,7 +232,9 @@ function createHeart() {
 
     const heart =
         document
-            .createElement("div");
+            .createElement(
+                "div"
+            );
 
     heart.innerHTML =
         "❤️";
@@ -164,14 +248,18 @@ function createHeart() {
         100 + "vw";
 
     heart.style.fontSize =
-        (15 +
-            Math.random() * 25)
-        + "px";
+        (
+            15 +
+            Math.random() *
+            25
+        ) + "px";
 
     heart.style.animationDuration =
-        (4 +
-            Math.random() * 4)
-        + "s";
+        (
+            4 +
+            Math.random() *
+            4
+        ) + "s";
 
     document.body
         .appendChild(
