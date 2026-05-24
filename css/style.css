@@ -13,6 +13,7 @@ body{
     linear-gradient(135deg,#0f172a,#1e293b);
     overflow:hidden;
     font-family:Arial,sans-serif;
+    padding:20px;
 }
 
 .card{
@@ -84,6 +85,7 @@ button:hover{
     line-height:2;
     font-size:20px;
     margin:25px 0;
+    white-space:pre-wrap;
 }
 
 .reply-box{

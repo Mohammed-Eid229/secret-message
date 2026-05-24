@@ -1,6 +1,3 @@
-const myNumber = "201114539675";
-
-
 // إنشاء لينك الرسالة
 function generateMessage() {
 
@@ -9,27 +6,35 @@ function generateMessage() {
             "personName"
         ).value.trim();
 
+    const phone =
+        document.getElementById(
+            "phoneNumber"
+        ).value.trim();
+
     const message =
         document.getElementById(
             "messageInput"
         ).value.trim();
 
-    if (!name || !message) {
+    if (!name || !phone || !message) {
 
         alert(
-            "اكتب الاسم والرسالة 😌"
+            "اكتب الاسم والرقم والرسالة 😌"
         );
 
         return;
     }
 
-    // تحويل Base64 عشان العربي والإيموجيز
+    // تحويل Base64
     const encodedName =
         btoa(
             unescape(
                 encodeURIComponent(name)
             )
         );
+
+    const encodedPhone =
+        btoa(phone);
 
     const encodedMessage =
         btoa(
@@ -41,6 +46,7 @@ function generateMessage() {
     const url =
         `${window.location.origin}${window.location.pathname}` +
         `?name=${encodedName}` +
+        `&phone=${encodedPhone}` +
         `&msg=${encodedMessage}`;
 
     navigator.clipboard
@@ -54,10 +60,7 @@ function generateMessage() {
 
 
 // عرض الرسالة
-function showMessage(
-    name,
-    message
-) {
+function showMessage(name, message) {
 
     document
         .getElementById("setup")
@@ -84,7 +87,6 @@ function showMessage(
 
     typing.innerHTML = "";
 
-    // Fix للعربي والإيموجيز
     const chars =
         Array.from(message);
 
@@ -104,9 +106,7 @@ function showMessage(
 
             } else {
 
-                clearInterval(
-                    effect
-                );
+                clearInterval(effect);
             }
 
         }, 35);
@@ -138,35 +138,43 @@ function sendReply() {
             window.location.search
         );
 
-    let personName =
-        "شخص";
-
     try {
 
-        personName =
+        const personName =
             decodeURIComponent(
                 escape(
                     atob(
                         params.get(
                             "name"
-                        ) || ""
+                        )
                     )
                 )
             );
 
-    } catch (e) {}
+        const phone =
+            atob(
+                params.get(
+                    "phone"
+                )
+            );
 
-    const text =
+        const text =
 `💌 وصلك رد جديد من ${personName}
 
 ${reply}`;
 
-    const whatsappURL =
-`https://wa.me/${myNumber}?text=${encodeURIComponent(text)}`;
+        const whatsappURL =
+`https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 
-    // فتح الواتساب مباشرة
-    window.location.href =
-        whatsappURL;
+        window.location.href =
+            whatsappURL;
+
+    } catch (error) {
+
+        alert(
+            "حصل خطأ 😢"
+        );
+    }
 }
 
 
@@ -232,9 +240,7 @@ function createHeart() {
 
     const heart =
         document
-            .createElement(
-                "div"
-            );
+            .createElement("div");
 
     heart.innerHTML =
         "❤️";
@@ -250,26 +256,20 @@ function createHeart() {
     heart.style.fontSize =
         (
             15 +
-            Math.random() *
-            25
+            Math.random() * 25
         ) + "px";
 
     heart.style.animationDuration =
         (
             4 +
-            Math.random() *
-            4
+            Math.random() * 4
         ) + "s";
 
     document.body
-        .appendChild(
-            heart
-        );
+        .appendChild(heart);
 
     setTimeout(() => {
-
         heart.remove();
-
     }, 7000);
 }
 
