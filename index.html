@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Secret Message ❤️</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="card">
+
+        <div class="setup-screen" id="setup">
+            <h1>✨ صانع الرسائل ✨</h1>
+
+            <input
+                type="text"
+                id="personName"
+                placeholder="اسم الشخص"
+            >
+
+            <textarea
+                id="messageInput"
+                placeholder="اكتب رسالتك هنا..."
+            ></textarea>
+
+            <button onclick="generateMessage()">
+                إنشاء الرسالة ❤️
+            </button>
+
+        </div>
+
+
+        <div class="message-screen hidden" id="messageScreen">
+
+            <h1 id="title"></h1>
+
+            <p id="typing"></p>
+
+            <button onclick="goBack()">
+                رسالة جديدة 🔄
+            </button>
+
+        </div>
+
+    </div>
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>
