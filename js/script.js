@@ -1,18 +1,19 @@
 const myNumber = "201114539675";
 
-function generateMessage(){
+// إنشاء لينك الرسالة
+function generateMessage() {
 
     const name =
-    document.getElementById(
-        "personName"
-    ).value.trim();
+        document.getElementById(
+            "personName"
+        ).value.trim();
 
     const message =
-    document.getElementById(
-        "messageInput"
-    ).value.trim();
+        document.getElementById(
+            "messageInput"
+        ).value.trim();
 
-    if(!name || !message){
+    if (!name || !message) {
 
         alert(
             "اكتب الاسم والرسالة 😌"
@@ -22,81 +23,85 @@ function generateMessage(){
     }
 
     const url =
-    `${window.location.origin}${window.location.pathname}` +
-    `?name=${encodeURIComponent(name)}` +
-    `&msg=${encodeURIComponent(message)}`;
+        `${window.location.origin}${window.location.pathname}` +
+        `?name=${encodeURIComponent(name)}` +
+        `&msg=${encodeURIComponent(message)}`;
 
     navigator.clipboard
-    .writeText(url);
+        .writeText(url);
 
     alert(
         "تم نسخ الرابط 😈\nابعت اللينك على واتساب"
     );
 }
 
+
+// عرض الرسالة
 function showMessage(
     name,
     message
-){
+) {
 
     document
-    .getElementById("setup")
-    .classList.add("hidden");
+        .getElementById("setup")
+        .classList.add("hidden");
 
     document
-    .getElementById(
-        "messageScreen"
-    )
-    .classList.remove(
-        "hidden"
-    );
+        .getElementById(
+            "messageScreen"
+        )
+        .classList.remove(
+            "hidden"
+        );
 
     document
-    .getElementById(
-        "title"
-    ).innerHTML =
-    `✨ رسالة إلى ${name} ✨`;
+        .getElementById(
+            "title"
+        ).innerHTML =
+        `✨ رسالة إلى ${name} ✨`;
 
     const typing =
-    document
-    .getElementById(
-        "typing"
-    );
+        document
+            .getElementById(
+                "typing"
+            );
 
     typing.innerHTML = "";
 
     let i = 0;
 
     const effect =
-    setInterval(()=>{
+        setInterval(() => {
 
-        typing.innerHTML +=
-        message[i] === "\n"
-        ? "<br>"
-        : message[i];
+            typing.innerHTML +=
+                message[i] === "\n"
+                    ? "<br>"
+                    : message[i];
 
-        i++;
+            i++;
 
-        if(i >= message.length){
+            if (i >= message.length) {
 
-            clearInterval(
-                effect
-            );
-        }
+                clearInterval(
+                    effect
+                );
+            }
 
-    },40);
+        }, 40);
 }
 
-function sendReply(){
+
+// إرسال الرد على واتساب
+function sendReply() {
 
     const reply =
-    document
-    .getElementById(
-        "reply"
-    )
-    .value.trim();
+        document
+            .getElementById(
+                "reply"
+            )
+            .value.trim();
 
-    if(!reply){
+    if (!reply) {
 
         alert(
             "اكتبي رد الأول 😌"
@@ -105,34 +110,42 @@ function sendReply(){
         return;
     }
 
+    // اسم الشخص من اللينك
+    const personName =
+        new URLSearchParams(
+            window.location.search
+        ).get("name") || "شخص";
+
     const text =
-`💌 وصلك رد جديد:
+`💌 وصلك رد جديد من ${personName}
 
 ${reply}`;
 
     const whatsappURL =
-`https://wa.me/${myNumber}?text=${encodeURIComponent(text)}`;
+`https://api.whatsapp.com/send?phone=${myNumber}&text=${encodeURIComponent(text)}`;
 
-    window.open(
-        whatsappURL,
-        "_blank"
-    );
+    // يفتح الواتساب مباشرة
+    window.location.href =
+        whatsappURL;
 }
 
-window.onload = ()=>{
+
+// لما الصفحة تفتح
+window.onload = () => {
 
     const params =
-    new URLSearchParams(
-        window.location.search
-    );
+        new URLSearchParams(
+            window.location.search
+        );
 
     const name =
-    params.get("name");
+        params.get("name");
 
     const msg =
-    params.get("msg");
+        params.get("msg");
 
-    if(name && msg){
+    // لو فيه رسالة في اللينك
+    if (name && msg) {
 
         showMessage(
             name,
@@ -141,43 +154,45 @@ window.onload = ()=>{
     }
 };
 
-function createHeart(){
+
+// القلوب
+function createHeart() {
 
     const heart =
-    document
-    .createElement("div");
+        document
+            .createElement("div");
 
     heart.innerHTML =
-    "❤️";
+        "❤️";
 
     heart.classList.add(
         "heart"
     );
 
     heart.style.left =
-    Math.random() *
-    100 + "vw";
+        Math.random() *
+        100 + "vw";
 
     heart.style.fontSize =
-    (15 +
-    Math.random()*25)
-    + "px";
+        (15 +
+            Math.random() * 25)
+        + "px";
 
     heart.style.animationDuration =
-    (4 +
-    Math.random()*4)
-    + "s";
+        (4 +
+            Math.random() * 4)
+        + "s";
 
     document.body
-    .appendChild(
-        heart
-    );
+        .appendChild(
+            heart
+        );
 
-    setTimeout(()=>{
+    setTimeout(() => {
 
         heart.remove();
 
-    },7000);
+    }, 7000);
 }
 
 setInterval(
