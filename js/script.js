@@ -37,59 +37,49 @@ function generateMessage() {
 
 
 // عرض الرسالة
-function showMessage(
-    name,
-    message
-) {
+function showMessage(name, message) {
 
     document
         .getElementById("setup")
         .classList.add("hidden");
 
     document
-        .getElementById(
-            "messageScreen"
-        )
-        .classList.remove(
-            "hidden"
-        );
+        .getElementById("messageScreen")
+        .classList.remove("hidden");
 
     document
-        .getElementById(
-            "title"
-        ).innerHTML =
+        .getElementById("title")
+        .innerHTML =
         `✨ رسالة إلى ${name} ✨`;
 
     const typing =
-        document
-            .getElementById(
-                "typing"
-            );
+        document.getElementById("typing");
 
     typing.innerHTML = "";
 
+    // يحافظ على العربي والإيموجيز صح
+    const chars = Array.from(message);
+
     let i = 0;
 
-    const effect =
-        setInterval(() => {
+    const effect = setInterval(() => {
+
+        if (i < chars.length) {
 
             typing.innerHTML +=
-                message[i] === "\n"
+                chars[i] === "\n"
                     ? "<br>"
-                    : message[i];
+                    : chars[i];
 
             i++;
 
-            if (i >= message.length) {
+        } else {
 
-                clearInterval(
-                    effect
-                );
-            }
+            clearInterval(effect);
+        }
 
-        }, 40);
+    }, 35);
 }
-
 
 // إرسال الرد على واتساب
 function sendReply() {
